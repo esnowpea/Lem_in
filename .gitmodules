@@ -1,0 +1,6 @@
+[submodule "lib/Libft"]
+	path = lib/Libft
+	url = https://github.com/esnowpea/Libft.git
+[submodule "lib/Libftprintf"]
+	path = lib/Libftprintf
+	url = https://github.com/esnowpea/Libftprintf.git
