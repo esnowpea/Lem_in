@@ -35,7 +35,10 @@ HEADERS_DIR = ./inc/
 HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 
 SRC_DIR = src/
-SRC_LIST =	main.c
+SRC_LIST =	main.c \
+			parsing.c \
+			init.c \
+			terminate.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 
 OBJ_DIR = obj/
