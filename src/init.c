@@ -35,7 +35,7 @@ t_room			*new_room(char *name, int x, int y)
 	return (room);
 }
 
-t_lem_in		*init_lem_in()
+t_lem_in		*init_lem_in(void)
 {
 	t_lem_in	*lem_in;
 

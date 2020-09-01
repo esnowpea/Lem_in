@@ -32,6 +32,7 @@ void	print_rooms(t_lem_in *lem_in)
 void	print_links(t_lem_in *lem_in)
 {
 	t_link	*link;
+
 	while (lem_in->links)
 	{
 		link = (t_link*)(lem_in->links->content);
