@@ -12,17 +12,6 @@
 
 #include "lem_in.h"
 
-t_link			*new_link(char *name1, char *name2)
-{
-	t_link		*link;
-
-	if (!(link = (t_link*)ft_memalloc(sizeof(t_link))))
-		terminate(ERR_MALC_INIT);
-	link->name1 = name1;
-	link->name2 = name2;
-	return (link);
-}
-
 t_room			*new_room(char *name, int x, int y)
 {
 	t_room		*room;

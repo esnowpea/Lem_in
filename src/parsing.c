@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:58:40 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/01 18:00:05 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/02 18:34:24 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		g_fd;
 
-int		pars_ants(void)
+int			pars_ants(void)
 {
 	char	*line;
 	char	*tmp;
@@ -34,7 +34,7 @@ int		pars_ants(void)
 	return (ants);
 }
 
-int		check_comment(char *str)
+int			check_comment(char *str)
 {
 	int		i;
 
@@ -58,7 +58,7 @@ int		check_comment(char *str)
 	return (0);
 }
 
-int		find_rooms(char *name, t_bilist *rooms)
+t_room		*find_room(char *name, t_bilist *rooms)
 {
 	t_bilist	*tmp;
 
@@ -66,13 +66,13 @@ int		find_rooms(char *name, t_bilist *rooms)
 	while (tmp)
 	{
 		if (ft_strequ(((t_room*)tmp->content)->name, name))
-			return (1);
+			return (tmp->content);
 		tmp = tmp->next;
 	}
 	return (0);
 }
 
-t_room	*check_rooms(char *str, t_lem_in *lem_in)
+t_room		*check_rooms(char *str, t_lem_in *lem_in)
 {
 	char	*tmp;
 	char	*name;
@@ -92,91 +92,135 @@ t_room	*check_rooms(char *str, t_lem_in *lem_in)
 	*(ft_strstr(name, " ")) = '\0';
 	if (ft_strstr(name, "-"))
 		terminate(ERR_BAD_ROOMS);
-	if (find_rooms(name, lem_in->rooms))
+	if (find_room(name, lem_in->rooms))
 		terminate(ERR_BAD_ROOMS);
 	if (name && name[0] == 'L')
 		terminate(ERR_BAD_ROOMS);
 	return (new_room(name, x, y));
 }
 
-int		find_links(char *name1, char *name2, t_bilist *links)
+t_room		*find_link(char *name, t_room *room)
 {
 	t_bilist	*tmp;
 
-	tmp = links;
+	tmp = room->links;
 	while (tmp)
 	{
-		if (ft_strequ(((t_link*)tmp->content)->name1, name1) &&
-		ft_strequ(((t_link*)tmp->content)->name2, name2))
-			return (1);
-		else if (ft_strequ(((t_link*)tmp->content)->name1, name2) &&
-		ft_strequ(((t_link*)tmp->content)->name2, name1))
+		if (ft_strequ(name, ((t_room*)tmp->content)->name))
+			return (tmp->content);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void		check_links(char *name1, t_lem_in *lem_in)
+{
+	char	*name2;
+	t_room	*room1;
+	t_room	*room2;
+
+	if (!(name2 = ft_strstr(name1, "-")))
+		return ;
+	*name2 = '\0';
+	name2++;
+	if (ft_strstr(name1, " ") || ft_strstr(name2, " ") ||
+	ft_strequ(name1, name2))
+		terminate(ERR_BAD_LINKS);
+	if (!(room1 = find_room(name1, lem_in->rooms)))
+		terminate(ERR_BAD_LINKS);
+	if (!(room2 = find_room(name2, lem_in->rooms)))
+		terminate(ERR_BAD_LINKS);
+	if (find_link(name1, room2) || find_link(name2, room1))
+		terminate(ERR_BAD_LINKS);
+	ft_bilstadd_back(&(room1->links), ft_bilstnew(room2, sizeof(t_room)));
+	ft_bilstadd_back(&(room2->links), ft_bilstnew(room1, sizeof(t_room)));
+}
+
+int			exist_links(t_bilist *rooms)
+{
+	t_bilist	*tmp;
+
+	tmp = rooms;
+	while (tmp)
+	{
+		if (((t_room*)tmp->content)->links)
 			return (1);
 		tmp = tmp->next;
 	}
 	return (0);
 }
 
-t_link	*check_links(char *str, t_lem_in *lem_in)
+void		pars_rooms_and_links(t_lem_in *lem_in, char *line, int command)
 {
-	char	*tmp;
-	char	*name1;
-	char	*name2;
-
-	if (!(tmp = ft_strstr(str, "-")))
-		return (0);
-	*tmp = '\0';
-	tmp++;
-	if (!(name1 = ft_strdup(str)))
-		terminate(ERR_MALC_INIT);
-	if (!(name2 = ft_strdup(tmp)))
-		terminate(ERR_MALC_INIT);
-	if (ft_strstr(name1, " ") || ft_strstr(name2, " "))
-		terminate(ERR_BAD_LINKS);
-	if (!find_rooms(name1, lem_in->rooms) || !find_rooms(name2, lem_in->rooms))
-		terminate(ERR_BAD_LINKS);
-	if (find_links(name1, name2, lem_in->links))
-		terminate(ERR_BAD_LINKS);
-	return (new_link(name1, name2));
-}
-
-void	pars_rooms_and_links(t_lem_in *lem_in, char *line, int command)
-{
-	t_room *room;
-	t_link *link;
+	t_room	*room;
 
 	if (check_comment(line))
 		return ;
-	else if (!lem_in->links && (room = check_rooms(line, lem_in)))
+	else if (!exist_links(lem_in->rooms) && (room = check_rooms(line, lem_in)))
 	{
 		room->is_end = command == 3 ? 1 : 0;
 		room->is_start = command == 2 ? 1 : 0;
 		ft_bilstadd_back(&(lem_in->rooms),
 				ft_bilstnew(room, sizeof(t_room)));
 	}
-	else if (lem_in->links && check_rooms(line, lem_in))
+	else if (exist_links(lem_in->rooms) && check_rooms(line, lem_in))
 		terminate(ERR_BAD_ROOMS);
-	else if ((link = check_links(line, lem_in)))
-	{
-		ft_bilstadd_back(&(lem_in->links),
-				ft_bilstnew(link, sizeof(t_link)));
-	}
+	else
+		check_links(line, lem_in);
 }
 
-int		check_corridor(t_bilist *room, t_lem_in *lem_in)
+void		del_room(void *content, size_t content_size)
 {
-	t_bilist *tmp;
+	(void)content;
+	(void)content_size;
+}
 
-	tmp = lem_in->links;
+int			add_corridor(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
+{
+	t_bilist	*tmp;
+
+	ft_bilstadd(&(lem_in->corridors),
+			ft_bilstnew(ft_bilstnew(room, sizeof(t_room)), sizeof(t_bilist)));
+	tmp = corridor;
 	while (tmp)
 	{
-		ft_strequ((t_link *)tmp->content)->name1, ((t_room*)room->content)
-		->name);
+		ft_bilstadd((t_bilist**)(&lem_in->corridors->content),
+					ft_bilstnew(tmp->content, sizeof(t_room)));
 		tmp = tmp->next;
 	}
+	return (1);
 }
 
-int		check_start_and_end(t_lem_in *lem_in)
+int			check_corridor(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
+{
+	t_bilist	*tmp;
+	t_bilist	*tmp0;
+
+	if (room->is_end)
+		add_corridor(room, corridor, lem_in);
+	tmp = room->links;
+	while (tmp)
+	{
+		if (!find_room(((t_room*)tmp->content)->name, corridor))
+		{
+			tmp0 = ft_bilstnew(room, sizeof(t_room));
+			if (corridor)
+			{
+				tmp0->next = corridor;
+				corridor->prev = tmp0;
+			}
+			corridor = tmp0;
+			check_corridor((t_room *)tmp->content, corridor, lem_in);
+			tmp0 = corridor->next;
+			ft_bilstdelone(&corridor, del_room);
+			corridor = tmp0;
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+int			check_start_and_end(t_lem_in *lem_in)
 {
 	t_bilist	*tmp;
 	t_bilist	*start_room;
@@ -199,16 +243,18 @@ int		check_start_and_end(t_lem_in *lem_in)
 	}
 	if (is_start != 1 || is_end != 1)
 		terminate(ERR_BAD_ROOMS);
-	return (check_corridor(start_room, lem_in));
+	check_corridor(start_room->content, 0, lem_in);
+	return (lem_in->corridors != NULL);
 }
 
-void	parsing_input(t_lem_in *lem_in)
+void		parsing_input(t_lem_in *lem_in)
 {
 	char	*line;
 	int		comment;
 	int		gnl;
 
 	g_fd = 0;
+//	open("/Users/esnowpea/CLionProjects/Lem_in/1.map", O_RDWR);
 	lem_in->ants = pars_ants();
 	comment = 0;
 	while ((gnl = get_next_line(g_fd, &line)) > 0)

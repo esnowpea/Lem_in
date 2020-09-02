@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:20:14 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/08/31 18:31:50 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/02 14:47:28 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,64 @@
 
 void	print_rooms(t_lem_in *lem_in)
 {
-	t_room *room;
+	t_room		*room;
+	t_bilist	*tmp;
 
-	while (lem_in->rooms)
+	tmp = lem_in->rooms;
+	while (tmp)
 	{
-		room = (t_room*)(lem_in->rooms->content);
+		room = (t_room*)(tmp->content);
 		ft_printf("%s %d %d", room->name, room->coord_x, room->coord_y);
 		if (room->is_start)
 			ft_printf(" start room");
 		if (room->is_end)
 			ft_printf(" end room");
 		ft_printf("\n");
-		lem_in->rooms = lem_in->rooms->next;
+		tmp = tmp->next;
 	}
 }
 
 void	print_links(t_lem_in *lem_in)
 {
-	t_link	*link;
+	t_room		*room;
+	t_bilist	*tmp;
+	t_bilist	*tmp0;
 
-	while (lem_in->links)
+	tmp = lem_in->rooms;
+	while (tmp)
 	{
-		link = (t_link*)(lem_in->links->content);
-		ft_printf("%s---%s\n", link->name1, link->name2);
-		lem_in->links = lem_in->links->next;
+		room = (t_room*)(tmp->content);
+		tmp0 = room->links;
+		while (tmp0)
+		{
+			ft_printf("%s---%s", room->name, ((t_room*)tmp0->content)->name);
+			if (room->is_start)
+				ft_printf(" start room");
+			if (room->is_end)
+				ft_printf(" end room");
+			ft_printf("\n");
+			tmp0 = tmp0->next;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	print_corridors(t_lem_in *lem_in)
+{
+	t_bilist	*tmp;
+	t_bilist	*tmp0;
+
+	tmp = lem_in->corridors;
+	while (tmp)
+	{
+		tmp0 = (t_bilist*)tmp->content;
+		while (tmp0)
+		{
+			ft_printf("[%s]->", ((t_room*)tmp0->content)->name);
+			tmp0 = tmp0->next;
+		}
+		write(1, "\n", 1);
+		tmp = tmp->next;
 	}
 }
 
@@ -50,5 +84,6 @@ int		main(void)
 	ft_printf("ants = %d\n", lem_in->ants);
 	print_rooms(lem_in);
 	print_links(lem_in);
+	print_corridors(lem_in);
 	return (0);
 }
