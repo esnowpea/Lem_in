@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:20:14 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/02 14:47:28 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/04 18:55:26 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,40 @@ void	print_links(t_lem_in *lem_in)
 	}
 }
 
-void	print_corridors(t_lem_in *lem_in)
+void	print_corridors(t_bilist *corridors)
 {
-	t_bilist	*tmp;
-	t_bilist	*tmp0;
+	t_bilist	*corridor;
+	t_bilist	*room;
 
-	tmp = lem_in->corridors;
-	while (tmp)
+	corridor = corridors;
+	while (corridor->prev)
+		corridor = corridor->prev;
+	while (corridor)
 	{
-		tmp0 = (t_bilist*)tmp->content;
-		while (tmp0)
+		room = (t_bilist*)corridor->content;
+		ft_printf("len = %d: ", ft_bilstlength(room));
+		while (room)
 		{
-			ft_printf("[%s]->", ((t_room*)tmp0->content)->name);
-			tmp0 = tmp0->next;
+			ft_printf("[%s]%s", ((t_room*)room->content)->name,
+			room->next ? "->" : "\n");
+			room = room->next;
 		}
-		write(1, "\n", 1);
-		tmp = tmp->next;
+		corridor = corridor->next;
+	}
+}
+
+void	print_solutions(t_bilist *solutions)
+{
+	t_bilist	*solution;
+	int			i;
+
+	solution = solutions;
+	i = 1;
+	while (solution)
+	{
+		ft_printf("\nSolution %d:\n", i++);
+		print_corridors((t_bilist*)(solution->content));
+		solution = solution->next;
 	}
 }
 
@@ -82,8 +100,10 @@ int		main(void)
 	lem_in = init_lem_in();
 	parsing_input(lem_in);
 	ft_printf("ants = %d\n", lem_in->ants);
-	print_rooms(lem_in);
-	print_links(lem_in);
-	print_corridors(lem_in);
+//	print_rooms(lem_in);
+//	print_links(lem_in);
+	find_solution(lem_in);
+	print_corridors(lem_in->corridors);
+	print_solutions(lem_in->solutions);
 	return (0);
 }

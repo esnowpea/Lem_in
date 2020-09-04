@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:22:04 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/02 16:05:19 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/04 18:41:07 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,15 @@ typedef struct			s_lem_in
 	int					ants;
 	t_bilist			*rooms;
 	t_bilist			*corridors;
+	t_bilist			*solutions;
 }						t_lem_in;
 
 void					terminate(char *s);
 t_lem_in				*init_lem_in();
 void					parsing_input(t_lem_in *lem_in);
 t_room					*new_room(char *name, int x, int y);
+void					del_node(void *content, size_t content_size);
+void					find_solution(t_lem_in *lem_in);
+void					add_corridor(t_bilist *corridor, t_bilist **corridors);
 
 #endif

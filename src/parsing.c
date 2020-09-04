@@ -6,33 +6,11 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:58:40 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/02 18:34:24 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/04 20:57:15 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-#include <fcntl.h>
-
-int		g_fd;
-
-int			pars_ants(void)
-{
-	char	*line;
-	char	*tmp;
-	int		ants;
-
-	if (get_next_line(g_fd, &line) <= 0)
-		terminate(ERR_GNL_READ);
-	ants = ft_atoi(line);
-	if (ants < 1)
-		terminate(ERR_ANTS_PARC);
-	tmp = ft_itoa(ants);
-	if (ft_strcmp(tmp, line))
-		terminate(ERR_ANTS_PARC);
-	free(tmp);
-	free(line);
-	return (ants);
-}
 
 int			check_comment(char *str)
 {
@@ -56,6 +34,26 @@ int			check_comment(char *str)
 			return (1);
 	}
 	return (0);
+}
+
+int			pars_ants(void)
+{
+	char	*line;
+	char	*tmp;
+	int		ants;
+
+	line = "#";
+	while (get_next_line(0, &line) > 0 && check_comment(line))
+		free(line);
+	ants = ft_atoi(line);
+	if (ants < 1)
+		terminate(ERR_ANTS_PARC);
+	tmp = ft_itoa(ants);
+	if (ft_strcmp(tmp, line))
+		terminate(ERR_ANTS_PARC);
+	free(tmp);
+	free(line);
+	return (ants);
 }
 
 t_room		*find_room(char *name, t_bilist *rooms)
@@ -169,55 +167,49 @@ void		pars_rooms_and_links(t_lem_in *lem_in, char *line, int command)
 		check_links(line, lem_in);
 }
 
-void		del_room(void *content, size_t content_size)
-{
-	(void)content;
-	(void)content_size;
-}
-
-int			add_corridor(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
+void		add_corridor(t_bilist *corridor, t_bilist **corridors)
 {
 	t_bilist	*tmp;
 
-	ft_bilstadd(&(lem_in->corridors),
-			ft_bilstnew(ft_bilstnew(room, sizeof(t_room)), sizeof(t_bilist)));
+	ft_bilstadd(corridors, ft_bilstnew(0, sizeof(t_bilist)));
 	tmp = corridor;
 	while (tmp)
 	{
-		ft_bilstadd((t_bilist**)(&lem_in->corridors->content),
+		ft_bilstadd((t_bilist**)(&((*corridors)->content)),
 					ft_bilstnew(tmp->content, sizeof(t_room)));
 		tmp = tmp->next;
 	}
-	return (1);
 }
 
-int			check_corridor(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
+void		find_corridor(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
 {
 	t_bilist	*tmp;
-	t_bilist	*tmp0;
 
 	if (room->is_end)
-		add_corridor(room, corridor, lem_in);
+	{
+		ft_bilstadd(&corridor, ft_bilstnew(room, sizeof(t_room)));
+		add_corridor(corridor, &lem_in->corridors);
+		ft_bilstdelone(&corridor, del_node);
+		return ;
+	}
 	tmp = room->links;
 	while (tmp)
 	{
 		if (!find_room(((t_room*)tmp->content)->name, corridor))
 		{
-			tmp0 = ft_bilstnew(room, sizeof(t_room));
-			if (corridor)
-			{
-				tmp0->next = corridor;
-				corridor->prev = tmp0;
-			}
-			corridor = tmp0;
-			check_corridor((t_room *)tmp->content, corridor, lem_in);
-			tmp0 = corridor->next;
-			ft_bilstdelone(&corridor, del_room);
-			corridor = tmp0;
+			ft_bilstadd(&corridor, ft_bilstnew(room, sizeof(t_room)));
+			find_corridor((t_room *)tmp->content, corridor, lem_in);
+			ft_bilstdelone(&corridor, del_node);
 		}
 		tmp = tmp->next;
 	}
-	return (1);
+}
+
+int			bilst_length_cmp(void *a, void *b)
+{
+	if (ft_bilstlength((t_bilist*)a) > ft_bilstlength((t_bilist*)b))
+		return (1);
+	return (0);
 }
 
 int			check_start_and_end(t_lem_in *lem_in)
@@ -243,7 +235,8 @@ int			check_start_and_end(t_lem_in *lem_in)
 	}
 	if (is_start != 1 || is_end != 1)
 		terminate(ERR_BAD_ROOMS);
-	check_corridor(start_room->content, 0, lem_in);
+	find_corridor(start_room->content, 0, lem_in);
+	ft_bilstsort(&(lem_in->corridors), bilst_length_cmp);
 	return (lem_in->corridors != NULL);
 }
 
@@ -253,11 +246,9 @@ void		parsing_input(t_lem_in *lem_in)
 	int		comment;
 	int		gnl;
 
-	g_fd = 0;
-//	open("/Users/esnowpea/CLionProjects/Lem_in/1.map", O_RDWR);
 	lem_in->ants = pars_ants();
 	comment = 0;
-	while ((gnl = get_next_line(g_fd, &line)) > 0)
+	while ((gnl = get_next_line(0, &line)) > 0)
 	{
 		pars_rooms_and_links(lem_in, line, comment);
 		comment = check_comment(line);
