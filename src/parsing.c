@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:58:40 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/04 20:57:15 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/18 16:26:46 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ int			pars_ants(void)
 	return (ants);
 }
 
-t_room		*find_room(char *name, t_bilist *rooms)
+t_room		*find_room_name(char *name, t_bilist *rooms)
 {
 	t_bilist	*tmp;
 
 	tmp = rooms;
+	while (tmp && tmp->prev)
+		tmp = tmp->prev;
 	while (tmp)
 	{
 		if (ft_strequ(((t_room*)tmp->content)->name, name))
@@ -90,7 +92,7 @@ t_room		*check_rooms(char *str, t_lem_in *lem_in)
 	*(ft_strstr(name, " ")) = '\0';
 	if (ft_strstr(name, "-"))
 		terminate(ERR_BAD_ROOMS);
-	if (find_room(name, lem_in->rooms))
+	if (find_room_name(name, lem_in->rooms))
 		terminate(ERR_BAD_ROOMS);
 	if (name && name[0] == 'L')
 		terminate(ERR_BAD_ROOMS);
@@ -124,12 +126,12 @@ void		check_links(char *name1, t_lem_in *lem_in)
 	if (ft_strstr(name1, " ") || ft_strstr(name2, " ") ||
 	ft_strequ(name1, name2))
 		terminate(ERR_BAD_LINKS);
-	if (!(room1 = find_room(name1, lem_in->rooms)))
+	if (!(room1 = find_room_name(name1, lem_in->rooms)))
 		terminate(ERR_BAD_LINKS);
-	if (!(room2 = find_room(name2, lem_in->rooms)))
+	if (!(room2 = find_room_name(name2, lem_in->rooms)))
 		terminate(ERR_BAD_LINKS);
 	if (find_link(name1, room2) || find_link(name2, room1))
-		terminate(ERR_BAD_LINKS);
+		return ;//terminate(ERR_BAD_LINKS);
 	ft_bilstadd_back(&(room1->links), ft_bilstnew(room2, sizeof(t_room)));
 	ft_bilstadd_back(&(room2->links), ft_bilstnew(room1, sizeof(t_room)));
 }
@@ -169,53 +171,41 @@ void		pars_rooms_and_links(t_lem_in *lem_in, char *line, int command)
 
 void		add_corridor(t_bilist *corridor, t_bilist **corridors)
 {
-	t_bilist	*tmp;
+	t_bilist	*room;
 
 	ft_bilstadd(corridors, ft_bilstnew(0, sizeof(t_bilist)));
-	tmp = corridor;
-	while (tmp)
+	room = corridor;
+	while (room)
 	{
-		ft_bilstadd((t_bilist**)(&((*corridors)->content)),
-					ft_bilstnew(tmp->content, sizeof(t_room)));
-		tmp = tmp->next;
+		ft_bilstadd_back((t_bilist**)(&((*corridors)->content)),
+					ft_bilstnew(room->content, sizeof(t_room)));
+		room = room->next;
 	}
 }
 
-void		find_corridor(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
+void		find_corridors(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
 {
 	t_bilist	*tmp;
 
+	ft_bilstadd_back(&corridor, ft_bilstnew(room, sizeof(t_room)));
 	if (room->is_end)
-	{
-		ft_bilstadd(&corridor, ft_bilstnew(room, sizeof(t_room)));
 		add_corridor(corridor, &lem_in->corridors);
-		ft_bilstdelone(&corridor, del_node);
-		return ;
-	}
-	tmp = room->links;
-	while (tmp)
+	else
 	{
-		if (!find_room(((t_room*)tmp->content)->name, corridor))
+		tmp = room->links;
+		while (tmp)
 		{
-			ft_bilstadd(&corridor, ft_bilstnew(room, sizeof(t_room)));
-			find_corridor((t_room *)tmp->content, corridor, lem_in);
-			ft_bilstdelone(&corridor, del_node);
+			if (!find_room_name(((t_room *) tmp->content)->name, corridor))
+				find_corridors((t_room *) tmp->content, corridor, lem_in);
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
 	}
-}
-
-int			bilst_length_cmp(void *a, void *b)
-{
-	if (ft_bilstlength((t_bilist*)a) > ft_bilstlength((t_bilist*)b))
-		return (1);
-	return (0);
+	ft_bilstdelone_back(&corridor, del_node);
 }
 
 int			check_start_and_end(t_lem_in *lem_in)
 {
 	t_bilist	*tmp;
-	t_bilist	*start_room;
 	int			is_start;
 	int			is_end;
 
@@ -226,18 +216,26 @@ int			check_start_and_end(t_lem_in *lem_in)
 	{
 		if (((t_room*)tmp->content)->is_start == 1)
 		{
-			start_room = tmp;
+			lem_in->start_room = tmp->content;
 			is_start++;
 		}
 		if (((t_room*)tmp->content)->is_end == 1)
+		{
+			lem_in->end_room = tmp->content;
 			is_end++;
+		}
 		tmp = tmp->next;
 	}
+	ft_printf("start: %d, end: %d\n", is_start, is_end);
 	if (is_start != 1 || is_end != 1)
 		terminate(ERR_BAD_ROOMS);
-	find_corridor(start_room->content, 0, lem_in);
-	ft_bilstsort(&(lem_in->corridors), bilst_length_cmp);
-	return (lem_in->corridors != NULL);
+	ft_printf("Start find corridors\n");
+	find_solution(1, lem_in);
+//	exit(0);
+//	find_corridors(start_room->content, 0, lem_in);
+//	ft_bilstsort(&(lem_in->corridors), bilst_length_cmp);
+	ft_printf("End find corridors\n");
+	return (1);
 }
 
 void		parsing_input(t_lem_in *lem_in)
@@ -256,6 +254,7 @@ void		parsing_input(t_lem_in *lem_in)
 	}
 	if (gnl < 0)
 		terminate(ERR_GNL_READ);
+	ft_printf("End Parcing!\n");
 	if (!check_start_and_end(lem_in))
 		terminate(ERR_BAD_INPUT);
 }

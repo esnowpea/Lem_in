@@ -3,7 +3,7 @@ project(Lem_in C)
 
 set(CMAKE_C_STANDARD 90)
 
-add_executable(Lem_in src/main.c src/parsing.c src/init.c src/terminate.c src/find_solutions.c)
+add_executable(Lem_in src/main.c src/parsing.c src/init.c src/terminate.c src/find_solutions.c src/bilst_length_cmp.c src/solution.c lib/Libft/src/ft_bilstdup.c src/print.c)
 target_include_directories(Lem_in PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 target_include_directories(Lem_in PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 

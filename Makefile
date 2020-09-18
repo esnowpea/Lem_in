@@ -39,7 +39,10 @@ SRC_LIST =	main.c \
 			parsing.c \
 			init.c \
 			terminate.c \
-			find_solutions.c
+			find_solutions.c \
+			solution.c \
+			print.c \
+			bilst_length_cmp.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 
 OBJ_DIR = obj/
