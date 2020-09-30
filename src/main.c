@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:20:14 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/18 16:19:25 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/30 19:34:46 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,10 @@ int		main(void)
 
 	lem_in = init_lem_in();
 	parsing_input(lem_in);
+	ft_printf("Start find solutions\n");
+	find_solution(lem_in);
+	ft_printf("End find solutions\n");
+	print_solutions(lem_in->solutions);
 //	ft_printf("Number of corridors %d\n", ft_bilstlength(&lem_in->corridors));
 //	find_solutions(0, lem_in);
 //	ft_printf("Number of solutions %d\n", ft_bilstlength(&lem_in->solutions));
@@ -141,5 +145,6 @@ int		main(void)
 	print_result(lem_in->ants, select_solution(lem_in));
 //	ft_printf("Number of corridors %d\n", ft_bilstlength(&lem_in->corridors));
 //	ft_printf("Number of solutions %d\n", ft_bilstlength(&lem_in->solutions));
+	exit(0);
 	return (0);
 }

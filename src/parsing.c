@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:58:40 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/18 16:26:46 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/30 17:56:01 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,17 @@ void		find_corridors(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
 	ft_bilstdelone_back(&corridor, del_node);
 }
 
+int			find_corridor_pars(t_lem_in *lem_in)
+{
+	t_bilist	*corridor;
+
+	find_parant(lem_in->start_room, 0);
+	if (!(corridor = find_short_corridor(lem_in->end_room)))
+		return (0);
+	ft_bilstadd(&lem_in->solutions, ft_bilstnew(ft_bilstnew(corridor, 0), 0));
+	return (1);
+}
+
 int			check_start_and_end(t_lem_in *lem_in)
 {
 	t_bilist	*tmp;
@@ -226,16 +237,9 @@ int			check_start_and_end(t_lem_in *lem_in)
 		}
 		tmp = tmp->next;
 	}
-	ft_printf("start: %d, end: %d\n", is_start, is_end);
 	if (is_start != 1 || is_end != 1)
 		terminate(ERR_BAD_ROOMS);
-	ft_printf("Start find corridors\n");
-	find_solution(1, lem_in);
-//	exit(0);
-//	find_corridors(start_room->content, 0, lem_in);
-//	ft_bilstsort(&(lem_in->corridors), bilst_length_cmp);
-	ft_printf("End find corridors\n");
-	return (1);
+	return (find_corridor_pars(lem_in));
 }
 
 void		parsing_input(t_lem_in *lem_in)
@@ -254,7 +258,6 @@ void		parsing_input(t_lem_in *lem_in)
 	}
 	if (gnl < 0)
 		terminate(ERR_GNL_READ);
-	ft_printf("End Parcing!\n");
 	if (!check_start_and_end(lem_in))
 		terminate(ERR_BAD_INPUT);
 }

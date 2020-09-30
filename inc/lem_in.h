@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:22:04 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/18 13:54:07 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/30 16:09:02 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,11 @@ int						bilst_length_cmp(void *a, void *b);
 int						find_room(t_room *room, t_bilist *rooms);
 void					find_solutions(t_bilist *solution, t_lem_in *lem_in);
 void					add_corridor(t_bilist *corridor, t_bilist **corridors);
-void					find_solution(int n, t_lem_in *lem_in);
+void					find_parant(t_room *start, t_bilist *dont_visit);
+t_bilist				*find_short_corridor(t_room *end_room);
+void					find_solution(t_lem_in *lem_in);
 void	print_corridor(t_bilist *rooms);
 void	print_corridors(t_bilist *corridors);
+void	print_solutions(t_bilist *solutions);
 
 #endif

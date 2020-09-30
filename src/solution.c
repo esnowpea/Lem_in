@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:12:00 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/18 16:33:46 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/09/30 19:30:56 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,25 @@ int			find_room(t_room *room, t_bilist *rooms)
 	return (0);
 }
 
+int			find_room_in_solution(t_room *room, t_room *p, t_bilist *dont_visit)
+{
+	t_bilist	*corridor;
+
+	if (dont_visit)
+	{
+		corridor = dont_visit->content;
+		if (p->is_start && room->is_end && ft_bilstlength(&corridor))
+			return (1);
+		while (corridor)
+		{
+			if (find_room(room, corridor) > 0)
+				return (1);
+			corridor = corridor->next;
+		}
+	}
+	return (0);
+}
+
 void		null_parant(t_bilist *rooms)
 {
 	t_bilist *room;
@@ -117,12 +136,14 @@ void		find_parant(t_room *start, t_bilist *dont_visit)
 		{
 			if (!find_room((t_room*)links->content, visit) &&
 				!find_room((t_room*)links->content, queue) &&
-				find_room((t_room*)links->content, dont_visit) <= 0)
+				!find_room_in_solution((t_room*)links->content,
+				(t_room*)queue->content, dont_visit))
 			{
 				((t_room*)links->content)->parent = (t_room*)queue->content;
 				ft_bilstadd_back(&queue, ft_bilstnew(links->content, 0));
 			}
-			if (((t_room*)links->content)->is_end)
+			if (((t_room*)links->content)->is_end &&
+				!((t_room*)queue->content)->is_start)
 			{
 				ft_bilstdel(&visit, del_node);
 				ft_bilstdel(&queue, del_node);
@@ -153,26 +174,41 @@ t_bilist	*find_short_corridor(t_room *end_room)
 	return (0);
 }
 
-void		find_solution(int n, t_lem_in *lem_in)
+t_bilist	*find_solution_part(t_lem_in *lem_in, t_bilist *solution)
 {
-//	t_bilist	*corridor;
+	t_bilist	*corridor;
 
-	if (n == 1)
+	null_parant(lem_in->rooms);
+	find_parant(lem_in->start_room, solution);
+	if ((corridor = find_short_corridor(lem_in->end_room)))
 	{
-		find_parant(lem_in->start_room, 0);
-		ft_bilstadd(&lem_in->solutions,
-			  ft_bilstnew(
-			  		ft_bilstnew(find_short_corridor(lem_in->end_room), 0), 0));
+		ft_bilstadd(&solution, ft_bilstnew(corridor, 0));
+		solution = find_solution_part(lem_in, solution);
 	}
-//	print_corridor(corridor);
-//	removed_links(lem_in->end_room, lem_in->end_room->parent);
-//	null_parant(lem_in->rooms);
-//	find_parant(lem_in->start_room, 0);
-//	corridor = find_short_corridor(lem_in->end_room);
-//	print_corridor(corridor);
-//	restore_links_all(lem_in->rooms);
-//	null_parant(lem_in->rooms);
-//	find_parant(lem_in->start_room, corridor);
-//	corridor = find_short_corridor(lem_in->end_room);
-//	print_corridor(corridor);
+	return (solution);
+}
+
+void		find_solution(t_lem_in *lem_in)
+{
+	t_bilist	*tmp1;
+	t_bilist	*tmp2;
+	t_bilist	*solution;
+	int			n;
+
+	n = 2;
+	solution = find_solution_part(lem_in, 0);
+	while (n == ft_bilstlength(&solution))
+	{
+		ft_bilstadd(&lem_in->solutions, ft_bilstnew(solution, 0));
+		solution = find_solution_part(lem_in, 0);
+		n++;
+	}
+	tmp1 = solution;
+	while (tmp1)
+	{
+		tmp2 = tmp1->content;
+		tmp1 = tmp1->next;
+		ft_bilstdel(&tmp2, del_node);
+	}
+	ft_bilstdel(&solution, del_node);
 }

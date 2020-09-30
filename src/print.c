@@ -33,8 +33,6 @@ void	print_corridors(t_bilist *corridors)
 	t_bilist	*corridor;
 
 	corridor = corridors;
-	while (corridor->prev)
-		corridor = corridor->prev;
 	while (corridor)
 	{
 		print_corridor(corridor->content);
