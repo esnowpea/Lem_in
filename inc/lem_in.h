@@ -54,5 +54,6 @@ void					find_solution(t_lem_in *lem_in);
 void	print_corridor(t_bilist *rooms);
 void	print_corridors(t_bilist *corridors);
 void	print_solutions(t_bilist *solutions);
+void	print_links(t_bilist *rooms);
 
 #endif
