@@ -12,24 +12,6 @@
 
 #include "lem_in.h"
 
-int			corridor_cmp(t_bilist *corridor1, t_bilist *corridor2)
-{
-	t_bilist	*tmp1;
-	t_bilist	*tmp2;
-
-	tmp1 = ((t_bilist*)corridor1->content);
-	tmp2 = ((t_bilist*)corridor2->content);
-	while (tmp1 && tmp2)
-	{
-		if (!ft_strequ(((t_room*)tmp1->content)->name,
-				((t_room*)tmp2->content)->name))
-			return (0);
-		tmp1 = tmp1->next;
-		tmp2 = tmp2->next;
-	}
-	return (1);
-}
-
 int			solution_cmp(t_bilist *solution1, t_bilist *solution2)
 {
 	t_bilist	*tmp1;

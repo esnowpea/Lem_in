@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:12:00 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/07 20:01:09 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/10/08 17:20:52 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,22 +213,62 @@ t_bilist	*find_short_corridor(t_room *end_room)
 //	ft_bilstdel(&solution, del_node);
 //}
 
+int			corridor_cmp(t_bilist *corridor1, t_bilist *corridor2)
+{
+	t_bilist	*tmp1;
+	t_bilist	*tmp2;
+
+	tmp1 = corridor1;
+	tmp2 = corridor2;
+	while (tmp1 && tmp2)
+	{
+		if (!ft_strequ(((t_room*)tmp1->content)->name,
+					   ((t_room*)tmp2->content)->name))
+			return (0);
+		tmp1 = tmp1->next;
+		tmp2 = tmp2->next;
+	}
+	return (1);
+}
+
+int			find_corridor(t_bilist *corridor, t_bilist *corridors)
+{
+	t_bilist	*tmp;
+
+	tmp = corridors;
+	while (tmp)
+	{
+		if (corridor_cmp(corridor, tmp->content))
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 t_bilist	*find_solution_part(int n, t_lem_in *lem_in)
 {
 	t_bilist	*corridor;
 	t_bilist	*tmp;
 	t_bilist	*solution;
+	t_bilist	*corridors;
 	int i;
 
 	solution = 0;
 	tmp = 0;
 	i = 0;
+	corridors = 0;
 	restore_links_all(lem_in->rooms);
 	while (i < n)
 	{
 		null_parant(lem_in->rooms);
 		find_parant(lem_in->start_room, solution);
-		if ((corridor = find_short_corridor(lem_in->end_room)))
+		corridor = find_short_corridor(lem_in->end_room);
+		if (corridor && find_corridor(corridor, corridors))
+		{
+			ft_bilstdel(&corridor, del_node);
+			corridor = 0;
+		}
+		if (corridor)
 		{
 			print_corridor(corridor);
 			i++;
@@ -244,11 +284,14 @@ t_bilist	*find_solution_part(int n, t_lem_in *lem_in)
 				tmp = tmp->next;
 			}
 			else
+			{
 				tmp = 0;
+			}
 		}
 		else if (solution && (corridor = solution->content) &&
 		ft_bilstlength(&corridor) >= 4)
 		{
+			ft_bilstadd(&corridors, ft_bilstnew(corridor, 0));
 			tmp = corridor->next;
 			ft_bilstdelone(&solution, del_node);
 			i--;
