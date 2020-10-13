@@ -6,7 +6,7 @@
 #    By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/02 13:56:52 by esnowpea          #+#    #+#              #
-#    Updated: 2020/09/04 21:03:52 by esnowpea         ###   ########.fr        #
+#    Updated: 2020/10/13 15:52:40 by esnowpea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,10 +39,8 @@ SRC_LIST =	main.c \
 			parsing.c \
 			init.c \
 			terminate.c \
-			find_solutions.c \
 			solution.c \
-			print.c \
-			bilst_length_cmp.c
+			print.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 
 OBJ_DIR = obj/

@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:20:14 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/30 19:34:46 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/10/13 15:33:15 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		find_max_length_corridor(t_bilist *corridors)
 	corridor = corridors;
 	while (corridor)
 	{
-		k = ft_bilstlength(((t_bilist**)&(corridor->content)));
+		k = ft_bilstlength(((t_bilist*)(corridor->content)));
 		if (k > len)
 			len = k;
 		corridor = corridor->next;
@@ -37,13 +37,13 @@ int		find_length_corridor_with_ants(int ants, t_bilist *solution)
 	int			max_len;
 
 	max_len = find_max_length_corridor(solution);
-	n = ft_bilstlength(&solution);
+	n = ft_bilstlength(solution);
 	corridor = solution;
 	while (corridor)
 	{
 		if (ants > 0)
 			ants -= max_len -
-					ft_bilstlength(((t_bilist**)&(corridor->content)));
+					ft_bilstlength(((t_bilist*)(corridor->content)));
 		else
 			return (max_len);
 		corridor = corridor->next;
@@ -137,14 +137,6 @@ int		main(void)
 	find_solution(lem_in);
 	ft_printf("End find solutions\n");
 	print_solutions(lem_in->solutions);
-//	ft_printf("Number of corridors %d\n", ft_bilstlength(&lem_in->corridors));
-//	find_solutions(0, lem_in);
-//	ft_printf("Number of solutions %d\n", ft_bilstlength(&lem_in->solutions));
-//	print_corridors(lem_in->corridors);
-//	print_solutions(lem_in->solutions);
 	print_result(lem_in->ants, select_solution(lem_in));
-//	ft_printf("Number of corridors %d\n", ft_bilstlength(&lem_in->corridors));
-//	ft_printf("Number of solutions %d\n", ft_bilstlength(&lem_in->solutions));
-	exit(0);
 	return (0);
 }
