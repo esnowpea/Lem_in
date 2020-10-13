@@ -52,22 +52,3 @@ void	print_solutions(t_bilist *solutions)
 		solution = solution->next;
 	}
 }
-
-void	print_links(t_bilist *rooms)
-{
-	t_bilist *tmp;
-	t_bilist *room;
-
-	tmp = rooms;
-	while (tmp)
-	{
-		ft_printf("[%s links]:", ((t_room*)tmp->content)->name);
-		room = ((t_room*)tmp->content)->links;
-		print_corridor(room);
-		ft_printf("[%s rmlinks]:", ((t_room*)tmp->content)->name);
-		room = ((t_room*)tmp->content)->removed_links;
-		print_corridor(room);
-		ft_putchar('\n');
-		tmp = tmp->next;
-	}
-}

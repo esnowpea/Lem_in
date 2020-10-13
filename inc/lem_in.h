@@ -44,9 +44,7 @@ t_lem_in				*init_lem_in();
 void					parsing_input(t_lem_in *lem_in);
 t_room					*new_room(char *name, int x, int y);
 void					del_node(void *content, size_t content_size);
-int						bilst_length_cmp(void *a, void *b);
 int						find_room(t_room *room, t_bilist *rooms);
-//void					find_solutions(t_bilist *solution, t_lem_in *lem_in);
 void					add_corridor(t_bilist *corridor, t_bilist **corridors);
 void					find_parant(t_room *start, t_bilist *dont_visit);
 t_bilist				*find_short_corridor(t_room *end_room);
@@ -54,6 +52,5 @@ void					find_solution(t_lem_in *lem_in);
 void	print_corridor(t_bilist *rooms);
 void	print_corridors(t_bilist *corridors);
 void	print_solutions(t_bilist *solutions);
-void	print_links(t_bilist *rooms);
 
 #endif

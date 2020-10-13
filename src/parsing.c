@@ -169,40 +169,6 @@ void		pars_rooms_and_links(t_lem_in *lem_in, char *line, int command)
 		check_links(line, lem_in);
 }
 
-void		add_corridor(t_bilist *corridor, t_bilist **corridors)
-{
-	t_bilist	*room;
-
-	ft_bilstadd(corridors, ft_bilstnew(0, sizeof(t_bilist)));
-	room = corridor;
-	while (room)
-	{
-		ft_bilstadd_back((t_bilist**)(&((*corridors)->content)),
-					ft_bilstnew(room->content, sizeof(t_room)));
-		room = room->next;
-	}
-}
-
-void		find_corridors(t_room *room, t_bilist *corridor, t_lem_in *lem_in)
-{
-	t_bilist	*tmp;
-
-	ft_bilstadd_back(&corridor, ft_bilstnew(room, sizeof(t_room)));
-	if (room->is_end)
-		add_corridor(corridor, &lem_in->corridors);
-	else
-	{
-		tmp = room->links;
-		while (tmp)
-		{
-			if (!find_room_name(((t_room *) tmp->content)->name, corridor))
-				find_corridors((t_room *) tmp->content, corridor, lem_in);
-			tmp = tmp->next;
-		}
-	}
-	ft_bilstdelone_back(&corridor, del_node);
-}
-
 int			find_corridor_pars(t_lem_in *lem_in)
 {
 	t_bilist	*corridor;
