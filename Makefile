@@ -40,7 +40,8 @@ SRC_LIST =	main.c \
 			init.c \
 			terminate.c \
 			solution.c \
-			print.c
+			print.c \
+			print_result.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 
 OBJ_DIR = obj/
