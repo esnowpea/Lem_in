@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:31:59 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/09/01 15:45:42 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/10/22 14:22:25 by ablane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # define ERR_BAD_INPUT		"ERROR: Bad input in links or rooms"
 # define ERR_BAD_ROOMS		"ERROR: Bad input in rooms"
 # define ERR_BAD_LINKS		"ERROR: Bad input in links"
-# define ERR_TREADS			"ERROR: There is a problem with threads"
+# define ERR_BAD_COORD		"ERROR: There is a problem with coordinate"
+# define ERR_BAD_BIG_L		"ERROR: Impossible name for a room"
+# define ERR_BAD_MAP		"ERROR: Map data error"
+# define ERR_BAD_FILE		"ERROR: Can\'t open file"
 
 #endif
