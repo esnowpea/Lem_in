@@ -30,3 +30,4 @@ int		ft_count_data(size_t *cont, size_t *an, int i)
 	*an = ant;
 	return (i);
 }
+

@@ -114,3 +114,4 @@ void	print_current_position_ants(t_bilist *solution)
 		}
 	}
 }
+

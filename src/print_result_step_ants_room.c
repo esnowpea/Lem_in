@@ -72,3 +72,4 @@ int		ft_step_ants_room(t_bilist *solution, int *ant, int ants)
 	*ant = an;
 	return (ft_chek_solution_room_for_ants(solution, an, ants));
 }
+
