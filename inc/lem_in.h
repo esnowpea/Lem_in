@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:22:04 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/22 14:23:09 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/22 15:14:56 by ablane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ int						find_length_corridor_with_ants(int ants, t_bilist *sol);
 
 char					*ft_free_line(char *line);
 char					*ft_next_gnl(char *line, int fd);
+
 
 #endif
