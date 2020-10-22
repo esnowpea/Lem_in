@@ -6,100 +6,101 @@
 /*   By: ablane <ablane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 13:27:11 by ablane            #+#    #+#             */
-/*   Updated: 2020/10/15 17:16:12 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/10/21 14:47:15 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-//int		find_max_length_corridor(t_bilist *corridors)
-//{
-//	t_bilist	*corridor;
-//	int			k;
-//	int			len;
+////int		find_max_length_corridor(t_bilist *corridors)
+////{
+////	t_bilist	*corridor;
+////	int			k;
+////	int			len;
+////
+////	len = 0;
+////	corridor = corridors;
+////	while (corridor)
+////	{
+////		k = ft_bilstlength(((t_bilist*)&(corridor->content)));
+////		if (k > len)
+////			len = k;
+////		corridor = corridor->next;
+////	}
+////	return (len);
+////}
 //
-//	len = 0;
-//	corridor = corridors;
-//	while (corridor)
-//	{
-//		k = ft_bilstlength(((t_bilist**)&(corridor->content)));
-//		if (k > len)
-//			len = k;
-//		corridor = corridor->next;
-//	}
-//	return (len);
-//}
+////int		find_length_corridor_with_ants(int ants, t_bilist *solution)
+////{
+////	t_bilist	*corridor;
+////	int			n;
+////	int			max_len;
+////
+////	max_len = find_max_length_corridor(solution);
+////	n = ft_bilstlength(solution);
+////	corridor = solution;
+////	while (corridor)
+////	{
+////		if (ants > 0)
+////			ants -= max_len -
+////					ft_bilstlength(((t_bilist*)&(corridor->content)));
+////		else
+////			return (max_len);
+////		corridor = corridor->next;
+////	}
+////	return (max_len + (ants / n) + (ants % n));
+////}
 //
-//int		find_length_corridor_with_ants(int ants, t_bilist *solution)
-//{
-//	t_bilist	*corridor;
-//	int			n;
-//	int			max_len;
-//
-//	max_len = find_max_length_corridor(solution);
-//	n = ft_bilstlength(&solution);
-//	corridor = solution;
-//	while (corridor)
-//	{
-//		if (ants > 0)
-//			ants -= max_len -
-//					ft_bilstlength(((t_bilist**)&(corridor->content)));
-//		else
-//			return (max_len);
-//		corridor = corridor->next;
-//	}
-//	return (max_len + (ants / n) + (ants % n));
-//}
-//
-//void print_result(int ants, t_bilist *solution)
-//{
-//	int i;
-//	int j;
-//	int l;
-//	char ***array;
-//	int n;
-//	t_bilist *tmp1;
-//	t_bilist *tmp2;
-//
-//	n = find_length_corridor_with_ants(ants, solution) - 1;
-//	array = (char***)ft_memalloc(sizeof(char**) * n);
-//	i = 0;
-//	while (i < n)
-//		array[i++] = (char**)ft_memalloc(sizeof(char*) * ants);
-//	i = 0;
-//	j = 0;
-//	while (i < n)
-//	{
-//		tmp1 = solution;
-//		while (tmp1 && j < ants && j < n * (i + 1))
-//		{
-//			tmp2 = ((t_bilist*)tmp1->content)->next;
-//			l = i;
-//			while (tmp2 && l < n)
-//			{
-//				array[l][j] = ((t_room*)tmp2->content)->name;
-//				l++;
-//				tmp2 = tmp2->next;
-//			}
-//			tmp1 = tmp1->next;
-//			j++;
-//		}
-//		i++;
-//	}
-//	i = 0;
-//	while (i < n)
-//	{
-//		j = 0;
-//		while (j < ants)
-//		{
-//			if (array[i][j])
-//				ft_printf("L%d-%s%s", j + 1, array[i][j], " ");
-//			j++;
-//		}
-//		ft_printf("\n");
-//		i++;
-//	}
-//}
+void print_result_vanya(int ants, t_bilist *solution)
+{
+	int i;
+	int j;
+	int l;
+	char ***array;
+	int n;
+	t_bilist *tmp1;
+	t_bilist *tmp2;
+
+	n = find_length_corridor_with_ants(ants, solution) - 1;
+	array = (char***)ft_memalloc(sizeof(char**) * n);
+	i = 0;
+	while (i < n)
+		array[i++] = (char**)ft_memalloc(sizeof(char*) * ants);
+	i = 0;
+	j = 0;
+	while (i < n)
+	{
+		tmp1 = solution;
+		while (tmp1 && j < ants && j < n * (i + 1))
+		{
+			tmp2 = ((t_bilist*)tmp1->content)->next;
+			l = i;
+			while (tmp2 && l < n)
+			{
+				array[l][j] = ((t_room*)tmp2->content)->name;
+				l++;
+				tmp2 = tmp2->next;
+			}
+			tmp1 = tmp1->next;
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (i < n)
+	{
+		j = 0;
+		while (j < ants)
+		{
+			if (array[i][j])
+				ft_printf("L%d-%s%s", j + 1, array[i][j], " ");
+			j++;
+		}
+		ft_printf("\n");
+		i++;
+	}
+}
+/////////////////////////////////////////////////////////////////////////////
 
 size_t	ft_count_len_corridor(t_bilist *cor)
 {
@@ -121,6 +122,47 @@ size_t	ft_one_solution_add_ants(t_bilist *sol, size_t an)
 	return (an);
 }
 
+int		ft_count_data(size_t *cont, size_t *an, int i)
+{
+	size_t	content;
+	size_t	ant;
+
+	content = *cont + 1;
+	ant = *an - 1;
+	*cont = content;
+	*an = ant;
+	return (i);
+}
+
+size_t	ft_add_ant_corr(t_bilist *cor, size_t an)
+{
+	t_bilist *tmp;
+	int i;
+
+	tmp = cor;
+	while (tmp)
+	{
+		i = 0;
+		if (!tmp->next && !tmp->prev)
+			an = ft_one_solution_add_ants(tmp, an);
+		if (tmp->next && tmp->content_size < tmp->next->content_size &&
+			an)
+			i = ft_count_data(&tmp->content_size, &an, 1);
+		if (tmp->next && tmp->content_size == tmp->next->content_size &&
+			an)
+			i = ft_count_data(&tmp->content_size, &an, 0);
+		if (i == 1)
+		{
+			return(an);
+		}
+		if (!tmp->next && tmp->prev && tmp->content_size <
+									   tmp->prev->content_size && an)
+			ft_count_data(&tmp->content_size, &an, 0);
+		tmp = tmp->next;
+	}
+	return (an);
+}
+
 void	ft_add_ants_solution(t_bilist *solution, int ants)
 {
 	t_bilist *tmp;
@@ -130,22 +172,7 @@ void	ft_add_ants_solution(t_bilist *solution, int ants)
 	while (an)
 	{
 		tmp = solution;
-		while (tmp)
-		{
-			if (!tmp->next && !tmp->prev)
-				an = ft_one_solution_add_ants(tmp, an);
-			if (tmp->next && tmp->content_size <= tmp->next->content_size && an)
-			{
-				tmp->content_size++;
-				an--;
-			}
-			if (tmp->prev && tmp->content_size < tmp->prev->content_size && an)
-			{
-				tmp->content_size++;
-				an--;
-			}
-			tmp = tmp->next;
-		}
+		an = ft_add_ant_corr(tmp, an);
 	}
 }
 
@@ -161,7 +188,53 @@ void	ft_subtract_len_corridor_content_size(t_bilist *solution)
 	}
 }
 
-void	ft_start_ants_first_room(t_bilist *solution, int ants)
+void	ft_bilstsort_content_size(t_bilist **alst, int (*cmp)(size_t , size_t))
+{
+	t_bilist	*tmp;
+
+	if (alst && *alst)
+	{
+		tmp = *alst;
+		while (tmp->prev)
+			tmp = tmp->prev;
+		while (tmp->next)
+		{
+			if (cmp(tmp->content_size, tmp->next->content_size))
+			{
+				ft_bilstswap(tmp, tmp->next);
+				while (tmp->prev)
+					tmp = tmp->prev;
+				continue;
+			}
+			tmp = tmp->next;
+		}
+		while (tmp->prev)
+			tmp = tmp->prev;
+		*alst = tmp;
+	}
+}
+
+int		ft_more_less_content_size(size_t a, size_t b)
+{
+	if (a > b)
+		return (1);
+	return (0);
+}
+
+void	ft_print_len_cor(t_bilist *sol)
+{
+	t_bilist *tmp;
+
+	tmp = sol;
+	while (tmp)
+	{
+		ft_printf("%d\t", tmp->content_size);
+		tmp = tmp->next;
+	}
+	ft_printf("\n");
+}
+
+t_bilist	*ft_start_ants_first_room(t_bilist *solution, int ants)
 {
 	t_bilist *tmp;
 
@@ -171,8 +244,14 @@ void	ft_start_ants_first_room(t_bilist *solution, int ants)
 		tmp->content_size = ft_count_len_corridor((t_bilist*)tmp->content);
 		tmp = tmp->next;
 	}
+	ft_bilstsort_content_size(&solution, ft_more_less_content_size);
+	ft_print_len_cor(solution);
 	ft_add_ants_solution(solution, ants);
+	ft_print_len_cor(solution);
 	ft_subtract_len_corridor_content_size(solution);
+	ft_bilstsort_content_size(&solution, ft_more_less_content_size);
+	ft_print_len_cor(solution);
+	return (solution);
 }
 
 void	ft_step_ants_corridor(t_bilist *cor, size_t *num_ant, int ants)
@@ -254,72 +333,41 @@ int		ft_search_max_len_corridors(t_bilist *solution)
 	return (len_max);
 }
 
-int		search_next_print(t_bilist *solution, int ant, int i)
+int		ft_next_cor(t_bilist **tmp_cor, int i)
 {
-	t_bilist *tmpstart;
+	t_bilist* tmp;
+
+	tmp = *tmp_cor;
+	tmp = tmp->next;
+	*tmp_cor = tmp;
+	i--;
+	return (i);
+}
+
+int		ft_search_for_next_print(t_bilist *tmp_solution, size_t ant, int i)
+{
 	t_bilist *tmp_cor;
 	int n;
 
-	n = 0;
 	i++;
-	tmpstart = solution;
-	tmp_cor = NULL;
-	if (!tmp_cor && tmpstart)
-		tmpstart = tmpstart->next;
-	if (!tmpstart && !tmp_cor)
+	if (!tmp_solution)
 		return (0);
-	while (tmpstart)
+	while (tmp_solution)
 	{
-		if(!tmp_cor)//todo условие не нужно;
-		{
-			tmp_cor = (t_bilist *) tmpstart->content;
-			n = 0;
-		}
+		n = 0;
+		tmp_cor = (t_bilist *)tmp_solution->content;
 		while (tmp_cor)
 		{
-			if (tmp_cor->prev && tmp_cor->content_size == (size_t)ant)
-			{
-				tmp_cor = tmp_cor->next;
-				i--;
-			}
-			if (tmp_cor && tmp_cor->prev && tmp_cor->content_size && n >= i)
+			if (tmp_cor->prev && tmp_cor->content_size == ant)
+				i = ft_next_cor(&tmp_cor, i);
+			if (tmp_cor && tmp_cor->prev && tmp_cor->content_size > 0 && n >= i)
 				return (1);
 			if (tmp_cor)
 				tmp_cor = tmp_cor->next;
 			n++;
 		}
-		tmpstart = tmpstart->next;
+		tmp_solution = tmp_solution->next;
 	}
-	return (0);
-}
-
-int		ft_search_for_next_print(t_bilist *start, int ant, int len, int i)
-{
-//	t_bilist *tmpstart;
-//	t_bilist *tmp_cor;
-//
-//	tmpstart = start;
-//	tmp_cor = NULL;
-//	while (tmpstart)
-//	{
-//		tmp_cor = (t_bilist*)tmpstart->content;
-//		while (tmp_cor)
-//		{
-//			if(tmp_cor->content_size == ant)
-//				break ;
-//			tmp_cor = tmp_cor->next;
-//		}
-//		if(!tmp_cor)
-//			tmpstart = tmpstart->next;
-//		else if (tmp_cor->content_size == ant)
-//			break ;
-//	}
-//	if (tmp_cor)
-//		tmp_cor = tmp_cor->next;
-	len++;
-	len--;
-	if (search_next_print(start, ant, i))
-		return (1);
 	return (0);
 }
 
@@ -330,17 +378,17 @@ void	ft_print_room(t_bilist *cor, int i, t_bilist *start, int len)
 	int n;
 
 	n = 0;
+	len = len + 1;
+	len = len - 1;
 	while (cor && n <= i)
 	{
 		if(cor->prev && cor->content_size && n == i)
 		{
 			tmp = (t_room*)cor->content;
 			name = tmp->name;
-			if (cor->content_size == 17 && ft_strequ(name, "end0"))
-				cor->content_size = 17;
 			ft_printf("L%d-%s", cor->content_size, name);
-			if(ft_search_for_next_print(start, cor->content_size, len, i))
-				ft_printf(" ");
+			if (ft_search_for_next_print(start, cor->content_size, i))
+			ft_printf(" ");
 		}
 		n++;
 		cor = cor->next;
@@ -351,16 +399,18 @@ void	print_current_position_ants(t_bilist *solution)
 {
 	t_bilist *tmp;
 	t_bilist *cor;
+	t_bilist *tmp_solution;
 	int i;
 	int max_len;
 
 	i = 0;
+	tmp_solution = solution;
 	max_len = ft_search_max_len_corridors(solution);
 	tmp = solution;
 	while (tmp && i <= max_len)
 	{
 		cor = (t_bilist*)tmp->content;
-		ft_print_room(cor, i, solution, max_len);
+		ft_print_room(cor, i, tmp_solution, max_len);
 		tmp = tmp->next;
 		if (i <= max_len && !tmp)
 		{
@@ -433,25 +483,26 @@ t_bilist	*select_solution(t_lem_in *lem_in)
 }
 
 
-void	print_result(int ants, t_lem_in *lem_in)
+void	print_result(int ants, t_bilist *solution)
 {
 	int j;
 	int i;
 	int	ant;
-	t_bilist *solution;
 
-	i = 1;
+	i = 0;
 	j = 1;
 	ant = 1;
-	solution = select_solution(lem_in);
-	ft_start_ants_first_room(solution, ants);
+	solution = ft_start_ants_first_room(solution, ants);
 	while (j > 0)
 	{
 		j = ft_step_ants_room(solution, &ant, ants);
-		if (ant > ants + 1)
-			terminate("WTF?!"); //todo такого быть не должно!
-		print_current_position_ants(solution);
-		if (i++ != 1)
+		if (j)
+			print_current_position_ants(solution);
+		if (i++ && j)
 			ft_printf("\n");
 	}
+//	ft_printf("\n");
+//	ft_printf("\n");
+//	ft_printf("\n");
+//	print_result_vanya(ants, solution);
 }

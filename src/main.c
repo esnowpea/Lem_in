@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:20:14 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/15 17:14:48 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/10/22 15:00:36 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,6 @@ int		main(void)
 	find_solution(lem_in);
 	ft_printf("End find solutions\n");
 	print_solutions(lem_in->solutions);
-	print_result(lem_in->ants, lem_in);
-	return (0);
+	print_result(lem_in->ants, select_solution(lem_in));
+	exit(0);
 }
