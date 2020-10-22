@@ -3,7 +3,7 @@ project(Lem_in C)
 
 set(CMAKE_C_STANDARD 90)
 
-add_executable(Lem_in src/main.c src/parsing.c src/init.c src/terminate.c src/solution.c src/print.c src/solution.c src/print_result.c src/add_vertex.c)
+add_executable(Lem_in src/main.c src/parsing.c src/init.c src/terminate.c src/solution.c src/print.c src/solution.c src/print_result.c src/parsing_add_vertex.c src/parsing_add_edge.c src/parsing_last_chek.c src/print_result_start_step_ants.c src/print_result_start_step_ants_2.c src/print_result_start_step_ants_3.c src/print_result_step_ants_room.c src/print_current_position_ants.c)
 target_include_directories(Lem_in PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 target_include_directories(Lem_in PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 

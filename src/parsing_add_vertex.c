@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_vertex.c                                       :+:      :+:    :+:   */
+/*   parsing_add_vertex.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ablane <ablane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/22 14:59:24 by ablane            #+#    #+#             */
-/*   Updated: 2020/10/22 15:23:24 by esnowpea         ###   ########.fr       */
+/*   Created: 2020/10/22 16:09:59 by ablane            #+#    #+#             */
+/*   Updated: 2020/10/22 16:09:59 by ablane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	ft_start_end(t_room *room, int start)
 
 char	*ft_add_this_name(char *line)
 {
-	int i;
-	char *name;
+	int		i;
+	char	*name;
 
 	i = 0;
 	while (line[i] != ' ' && line[i] != '\0')
@@ -51,7 +51,7 @@ char	*ft_add_this_name(char *line)
 	name[i--] = '\0';
 	while (i != -1)
 	{
-		name[i] = line [i];
+		name[i] = line[i];
 		if (name[i] == '-')
 		{
 			name = ft_free_line(name);
@@ -62,9 +62,9 @@ char	*ft_add_this_name(char *line)
 	return (name);
 }
 
-char	*ft_search_name_for_start_end(char *line , int fd)
+char	*ft_search_name_for_start_end(char *line, int fd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (ft_strequ(line, "##start") || ft_strequ(line, "##end"))
@@ -80,9 +80,9 @@ char	*ft_search_name_for_start_end(char *line , int fd)
 
 void	ft_add_vertex(t_lem_in *lem_in, char **line, int fd)
 {
-	int len;
-	int start;
-	t_room *room;
+	int		len;
+	int		start;
+	t_room	*room;
 
 	start = 0;
 	len = ft_strlen(*line);
@@ -100,7 +100,7 @@ void	ft_add_vertex(t_lem_in *lem_in, char **line, int fd)
 		return ;
 	if (*line && *line[0] == 'L')
 		terminate(ERR_BAD_BIG_L);
-	room = new_room(ft_add_this_name(*line), 0 , 0);
+	room = new_room(ft_add_this_name(*line), 0, 0);
 	ft_start_end(room, start);
 	ft_add_coordinate(room, *line, 0);
 	ft_bilstadd(&(lem_in->rooms), ft_bilstnew(room, sizeof(t_room)));

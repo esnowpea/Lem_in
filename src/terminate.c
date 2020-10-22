@@ -23,3 +23,21 @@ void	del_node(void *content, size_t content_size)
 	(void)content;
 	(void)content_size;
 }
+
+char	*ft_free_line(char *line)
+{
+	if (line)
+	{
+		free(line);
+		line = NULL;
+	}
+	return (line);
+}
+
+char	*ft_next_gnl(char *line, int fd)
+{
+	line = ft_free_line(line);
+	if (get_next_line(fd, &line) > 0)
+		return (line);
+	return (NULL);
+}

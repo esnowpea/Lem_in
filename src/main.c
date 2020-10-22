@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:20:14 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/22 15:09:21 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/10/22 15:53:02 by ablane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	parsing_input_for_file(void)
 	}
 	if (fd > 1)
 		close(fd);
-	if	(gnl < 0)
+	if (gnl < 0)
 		terminate(ERR_GNL_READ);
 }
 
@@ -59,7 +59,7 @@ void	print_input(void)
 		ft_printf("%s\n", line);
 		line = ft_free_line(line);
 	}
-	if	(gnl < 0)
+	if (gnl < 0)
 		terminate(ERR_GNL_READ);
 	close(fd);
 }

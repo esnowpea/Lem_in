@@ -6,7 +6,7 @@
 #    By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/02 13:56:52 by esnowpea          #+#    #+#              #
-#    Updated: 2020/10/22 14:24:43 by ablane           ###   ########.fr        #
+#    Updated: 2020/10/22 16:31:58 by ablane           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,13 +36,20 @@ HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 
 SRC_DIR = src/
 SRC_LIST =	main.c \
-			parsing.c \
 			init.c \
-			terminate.c \
-			solution.c \
 			print.c \
-			add_vertex.c\
-			print_result.c
+			parsing.c \
+			solution.c \
+			terminate.c \
+			print_result.c \
+			parsing_add_edge.c \
+			parsing_last_chek.c \
+			parsing_add_vertex.c \
+			print_current_position_ants.c \
+			print_result_step_ants_room.c \
+			print_result_start_step_ants.c \
+			print_result_start_step_ants_2.c \
+			print_result_start_step_ants_3.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 
 OBJ_DIR = obj/
