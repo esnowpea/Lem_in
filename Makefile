@@ -93,6 +93,7 @@ fclean: clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@$(MAKE) -C $(LIBFTPRINTF_DIR) fclean
 	@rm -f $(NAME_EXEC)
+	@rm -f $(../input_data.txt)
 ifneq ($(strip $(wildcard $(NAME_EXEC))),)
 	@echo "$(NAME):$(TABS)$(RED)$(NAME_EXEC) deleted$(END)"
 endif
