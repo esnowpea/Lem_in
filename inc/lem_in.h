@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:22:04 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/22 14:22:25 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/22 14:23:09 by ablane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ void					print_solutions(t_bilist *solutions);
 void					print_result(int ants, t_lem_in *lem_in);
 void					del_node(void *content, size_t content_size);
 void					find_parant(t_room *start, t_bilist *dont_visit);
+void					ft_add_vertex(t_lem_in *lem_in, char **line, int fd);
 
+int						ft_search_coordin(int i, char *line);
 int						find_room(t_room *room, t_bilist *rooms);
 int						find_length_corridor_with_ants(int ants, t_bilist *sol);
 
