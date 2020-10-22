@@ -64,5 +64,4 @@ int						find_length_corridor_with_ants(int ants, t_bilist *sol);
 char					*ft_free_line(char *line);
 char					*ft_next_gnl(char *line, int fd);
 
-
 #endif

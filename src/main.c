@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:20:14 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/22 14:22:25 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/22 15:09:21 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ int		main(void)
 	lem_in = init_lem_in();
 	parsing_input_for_file();
 	parsing_input(lem_in);
-	ft_printf("Start find solutions\n");
 	find_solution(lem_in);
-	ft_printf("End find solutions\n");
-	print_solutions(lem_in->solutions);
 	print_input();
 	print_result(lem_in->ants, lem_in);
 	exit(0);

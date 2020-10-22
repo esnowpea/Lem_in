@@ -6,7 +6,7 @@
 /*   By: ablane <ablane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 15:11:27 by ablane            #+#    #+#             */
-/*   Updated: 2020/10/22 15:11:59 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/22 15:23:39 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ char	*ft_search_name(char *line)
 	}
 	return (name);
 }
-
 
 t_room *ft_search_name_struct(t_bilist *room, char *name)
 {
