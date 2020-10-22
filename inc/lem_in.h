@@ -41,6 +41,7 @@ typedef struct			s_lem_in
 
 t_lem_in				*init_lem_in();
 
+t_bilist				*select_solution(t_lem_in *lem_in);
 t_bilist				*find_short_corridor(t_room *end_room);
 
 t_room					*new_room(char *name, int x, int y);
@@ -62,6 +63,5 @@ int						find_length_corridor_with_ants(int ants, t_bilist *sol);
 
 char					*ft_free_line(char *line);
 char					*ft_next_gnl(char *line, int fd);
-
 
 #endif
