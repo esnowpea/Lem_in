@@ -6,7 +6,7 @@
 #    By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/02 13:56:52 by esnowpea          #+#    #+#              #
-#    Updated: 2020/10/13 15:52:40 by esnowpea         ###   ########.fr        #
+#    Updated: 2020/10/22 14:24:43 by ablane           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC_LIST =	main.c \
 			terminate.c \
 			solution.c \
 			print.c \
+			add_vertex.c\
 			print_result.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 
