@@ -105,4 +105,3 @@ void	ft_add_vertex(t_lem_in *lem_in, char **line, int fd)
 	ft_add_coordinate(room, *line, 0);
 	ft_bilstadd(&(lem_in->rooms), ft_bilstnew(room, sizeof(t_room)));
 }
-

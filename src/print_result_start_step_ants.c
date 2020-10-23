@@ -80,4 +80,3 @@ t_bilist	*ft_start_ants_first_room(t_bilist *solution, int ants)
 	ft_bilstsort_content_size(&solution);
 	return (solution);
 }
-

@@ -78,4 +78,3 @@ int		ft_add_edge(t_lem_in *lem_in, char *line)
 	ft_bilstadd(&tmp2->links, ft_bilstnew(tmp1, sizeof(t_room)));
 	return (1);
 }
-

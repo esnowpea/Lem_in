@@ -96,4 +96,3 @@ void	ft_last_chek(int gnl, t_lem_in *lem_in)
 	if (!check_start_and_end(lem_in))
 		terminate(ERR_BAD_INPUT);
 }
-

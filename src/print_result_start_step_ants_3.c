@@ -6,7 +6,7 @@
 /*   By: ablane <ablane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 16:22:31 by ablane            #+#    #+#             */
-/*   Updated: 2020/10/22 16:36:43 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/22 17:16:19 by ablane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,3 @@ int		ft_count_data(size_t *cont, size_t *an, int i)
 	*an = ant;
 	return (i);
 }
-

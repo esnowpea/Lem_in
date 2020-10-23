@@ -80,4 +80,3 @@ t_bilist	*select_solution(t_lem_in *lem_in)
 	}
 	return (solution);
 }
-
