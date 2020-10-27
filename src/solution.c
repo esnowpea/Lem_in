@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:12:00 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/22 14:51:57 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/10/27 14:32:46 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,50 +206,73 @@ int			find_corridor(t_bilist *corridor, t_bilist *corridors)
 	return (0);
 }
 
+t_find_solution	init_find_solution(void)
+{
+	t_find_solution var;
+
+	var.solution = 0;
+	var.corridor = 0;
+	var.dont_visit = 0;
+	var.tmp_corridor = 0;
+	return (var);
+}
+
+void		del_solution(t_bilist **solution)
+{
+	t_bilist	*tmp;
+
+	tmp = *solution;
+	while (tmp)
+	{
+		ft_bilstdel((t_bilist**)(&tmp->content), del_node);
+		tmp = tmp->next;
+	}
+	ft_bilstdel(solution, del_node);
+}
+
 t_bilist	*find_solution_part(int n, t_lem_in *lem_in)
 {
-	t_bilist	*corridor;
-	t_bilist	*tmp;
-	t_bilist	*solution;
-	t_bilist	*corridors;
+	t_find_solution		var;
 
-	solution = 0;
-	tmp = 0;
-	corridors = 0;
+	var = init_find_solution();
 	restore_links_all(lem_in->rooms);
-	while (ft_bilstlength(solution) < n)
+	while (ft_bilstlength(var.solution) < n)
 	{
 		null_parant(lem_in->rooms);
-		find_parant(lem_in->start_room, solution);
-		corridor = find_short_corridor(lem_in->end_room);
-		if (corridor && find_corridor(corridor, corridors))
-			ft_bilstdel(&corridor, del_node);
-
-		if (corridor)
-			ft_bilstadd_back(&solution, ft_bilstnew(corridor, 0));
-		else if (tmp)
+		find_parant(lem_in->start_room, var.solution);
+		var.corridor = find_short_corridor(lem_in->end_room);
+		if (var.corridor && find_corridor(var.corridor, var.dont_visit))
+			ft_bilstdel(&var.corridor, del_node);
+		if (var.corridor)
+			ft_bilstadd_back(&var.solution, ft_bilstnew(var.corridor, 0));
+		else if (var.tmp_corridor)
 		{
-			if (tmp->next && tmp->next->next)
+			if (var.tmp_corridor->next && var.tmp_corridor->next->next)
 			{
 				restore_links_all(lem_in->rooms);
-				removed_links((t_room*)tmp->content,
-				(t_room*)tmp->next->content);
-				tmp = tmp->next;
+				removed_links((t_room*)var.tmp_corridor->content,
+				(t_room*)var.tmp_corridor->next->content);
+				var.tmp_corridor = var.tmp_corridor->next;
 			}
 			else
-				ft_bilstdel(&tmp, del_node);
+				var.tmp_corridor = 0;
 		}
-		else if (solution && (corridor = solution->content) &&
-		ft_bilstlength(corridor) >= 4)
+		else if (var.solution && (var.corridor = var.solution->content) &&
+		ft_bilstlength(var.corridor) >= 4)
 		{
-			ft_bilstadd(&corridors, ft_bilstnew(corridor, 0));
-			tmp = corridor->next;
-			ft_bilstdelone(&solution, del_node);
+			ft_bilstadd(&var.dont_visit, ft_bilstnew(var.corridor, 0));
+			var.tmp_corridor = var.corridor->next;
+			ft_bilstdelone(&var.solution, del_node);
 		}
 		else
+		{
+			del_solution(&var.solution);
+			del_solution(&var.dont_visit);
 			return (0);
+		}
 	}
-	return (solution);
+	del_solution(&var.dont_visit);
+	return (var.solution);
 }
 
 void		find_solution(t_lem_in *lem_in)
@@ -263,11 +286,19 @@ void		find_solution(t_lem_in *lem_in)
 				  ft_bilstlength(lem_in->end_room->links));
 	n = 2;
 	len = 0;
-	while (n <= max_sol && (solution = find_solution_part(n, lem_in)) &&
-	(len > find_length_corridor_with_ants(lem_in->ants, solution) || len == 0))
+	while (n <= max_sol && (solution = find_solution_part(n, lem_in)))
 	{
-		len = find_length_corridor_with_ants(lem_in->ants, solution);
-		ft_bilstadd(&lem_in->solutions, ft_bilstnew(solution, 0));
-		n++;
+		if (len > find_length_corridor_with_ants(lem_in->ants, solution) ||
+		len == 0)
+		{
+			len = find_length_corridor_with_ants(lem_in->ants, solution);
+			ft_bilstadd(&lem_in->solutions, ft_bilstnew(solution, 0));
+			n++;
+		}
+		else
+		{
+			del_solution(&solution);
+			return ;
+		}
 	}
 }

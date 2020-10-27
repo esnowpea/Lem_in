@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:20:14 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/22 15:53:02 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/27 15:06:50 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	parsing_input_for_file(void)
 	char	*line;
 	int		fd;
 
-	fd = open("../input_data.txt", O_RDWR | O_TRUNC | O_CREAT, 0777);
+	fd = open(FILE_NAME, O_RDWR | O_TRUNC | O_CREAT, 0777);
 	if (fd < 0)
 		terminate(ERR_BAD_FILE);
 	while ((gnl = get_next_line(0, &line)) > 0)
@@ -51,7 +51,7 @@ void	print_input(void)
 	int		gnl;
 	char	*line;
 
-	fd = open("../input_data.txt", O_RDONLY, 0777);
+	fd = open(FILE_NAME, O_RDONLY, 0777);
 	if (fd < 0)
 		terminate(ERR_BAD_FILE);
 	while ((gnl = get_next_line(fd, &line)) > 0)
