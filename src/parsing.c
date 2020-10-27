@@ -6,7 +6,7 @@
 /*   By: ablane <ablane@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 15:11:27 by ablane            #+#    #+#             */
-/*   Updated: 2020/10/22 17:08:55 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/27 15:35:56 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	parsing_input(t_lem_in *lem_in)
 
 	i = 0;
 	line = NULL;
-	fd = open("../input_data.txt", O_RDONLY, 0777);
+	fd = open(FILE_NAME, O_RDONLY, 0777);
 	if (fd < 0)
 		terminate(ERR_BAD_FILE);
 	lem_in->ants = ft_ants(fd);

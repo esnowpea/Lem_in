@@ -6,7 +6,7 @@
 #    By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/02 13:56:52 by esnowpea          #+#    #+#              #
-#    Updated: 2020/10/22 17:08:55 by ablane           ###   ########.fr        #
+#    Updated: 2020/10/27 15:35:56 by esnowpea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,7 @@ fclean: clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@$(MAKE) -C $(LIBFTPRINTF_DIR) fclean
 	@rm -f $(NAME_EXEC)
-	@rm -f $(../input_data.txt)
+	@rm -f input_data.txt
 ifneq ($(strip $(wildcard $(NAME_EXEC))),)
 	@echo "$(NAME):$(TABS)$(RED)$(NAME_EXEC) deleted$(END)"
 endif

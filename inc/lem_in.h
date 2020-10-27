@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 15:22:04 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/22 17:08:55 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/27 15:35:56 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "ft_printf.h"
 # include "error_message.h"
 # include <fcntl.h>
+
+# define FILE_NAME "/Users/esnowpea/CLionProjects/Lem_in/input_data.txt" //todo
 
 typedef struct			s_room
 {
@@ -38,6 +40,14 @@ typedef struct			s_lem_in
 	t_bilist			*rooms;
 	t_bilist			*solutions;
 }						t_lem_in;
+
+typedef struct			s_find_solution
+{
+	t_bilist			*corridor;
+	t_bilist			*solution;
+	t_bilist			*dont_visit;
+	t_bilist			*tmp_corridor;
+}						t_find_solution;
 
 t_lem_in				*init_lem_in();
 
