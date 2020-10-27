@@ -6,7 +6,7 @@
 #    By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/02 13:56:52 by esnowpea          #+#    #+#              #
-#    Updated: 2020/10/27 15:35:56 by esnowpea         ###   ########.fr        #
+#    Updated: 2020/10/27 15:36:18 by esnowpea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,14 +37,16 @@ HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 SRC_DIR = src/
 SRC_LIST =	main.c \
 			init.c \
-			print.c \
 			parsing.c \
 			solution.c \
 			terminate.c \
+			rm_rs_links.c \
 			print_result.c \
+			find_corridor.c \
 			parsing_add_edge.c \
 			parsing_last_chek.c \
 			parsing_add_vertex.c \
+			breadth_first_search.c \
 			print_current_position_ants.c \
 			print_result_step_ants_room.c \
 			print_result_start_step_ants.c \

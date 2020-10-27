@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/31 16:12:26 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/22 17:09:04 by ablane           ###   ########.fr       */
+/*   Updated: 2020/10/27 16:27:01 by esnowpea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,15 @@ char	*ft_free_line(char *line)
 	return (line);
 }
 
-char	*ft_next_gnl(char *line, int fd)
+void	del_solution(t_bilist **solution)
 {
-	line = ft_free_line(line);
-	if (get_next_line(fd, &line) > 0)
-		return (line);
-	return (NULL);
+	t_bilist	*tmp;
+
+	tmp = *solution;
+	while (tmp)
+	{
+		ft_bilstdel((t_bilist**)(&tmp->content), del_node);
+		tmp = tmp->next;
+	}
+	ft_bilstdel(solution, del_node);
 }
