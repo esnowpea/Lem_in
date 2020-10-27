@@ -6,7 +6,7 @@
 /*   By: esnowpea <esnowpea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 15:12:00 by esnowpea          #+#    #+#             */
-/*   Updated: 2020/10/27 16:28:16 by esnowpea         ###   ########.fr       */
+/*   Updated: 2020/10/27 16:52:24 by ablane           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void		find_solution(t_lem_in *lem_in)
 	int			n;
 
 	max_sol = min(ft_bilstlength(lem_in->start_room->links),
-				ft_bilstlength(lem_in->end_room->links));
+					ft_bilstlength(lem_in->end_room->links));
 	n = 2;
 	len = 0;
 	while (n <= max_sol && (solution = find_solution_part(n, lem_in)))
